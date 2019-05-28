@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>Humidity Controller</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
+	<link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+
+	<script src="{{ url_for('static', filename='js/jquery.js') }}" ></script>
+	<script src="{{ url_for('static', filename='js/jquery.flot.js') }}" ></script>
+	<script>
+
+	$(document).ready(function() {
+	    console.log( "ready!" );
+			$.plot($("#placeholder"), {{data|safe}}, {{options}});
+
+
+			function render_plot() {
+		    $.ajax({
+		        url: "/data",
+		        cache: false
+		    }).done(function(data_json) {
+
+					var dataset = JSON.parse(data_json);
+
+					var data_object = [ { label: "Temp", data: dataset[0] },
+  												    { label: "Humidity", data: dataset[1] }
+														];
+
+					$.plot($("#placeholder"), data_object, "{}");
+					console.log(data_object);
+					//setTimeout(render_plot, 1000);
+					// this_plot.setData(data)
+					// this_plot.setupGrid()
+					// this_plot.draw()
+		    });
+		}
+		setInterval(render_plot, 2000); // Time in milliseconds
+
+
+	});
+
+
+
+
+
+
+</script>
+
+</head>
+
+<div id="placeholder" style="width:600px;height:300px"></div>
+
+</html>
