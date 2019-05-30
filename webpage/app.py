@@ -56,7 +56,7 @@ def launch_app(queue):
         json_string = json.dumps([temps, humidity])
         return json_string
 
-    app.run(host='0.0.0.0', port=80)
+    app.run(host='0.0.0.0', port=80, threaded=True)
 
 if __name__ == "__main__":
     launch_app()

@@ -22,12 +22,12 @@
 import sys
 import time
 import RPi.GPIO as GPIO
-import Adafruit_DHT
+import htu21d.htu21d as htu
 import sqlite3
 import webpage.app as app
 import multiprocessing as mp
 
-HUMIDITY_SETPOINT = 90
+HUMIDITY_SETPOINT = 95
 
 HYSTERESIS = 4
 
@@ -49,7 +49,7 @@ def add_data (temp, hum, setpoint, dbconn, curs):
             print("deferred")
 
 def get_rows(curs):
-    curs.execute("SELECT * FROM temps")
+    curs.execute("select * from (select * from temps order by timestamp DESC limit 1000) order by timestamp ASC;")
     rows = curs.fetchall()
     #print(rows)
     return rows
@@ -69,21 +69,8 @@ def main():
 
     def relay_off():
         GPIO.output(RELAY_PIN_BCM, False)
-    # Parse command line parameters.
-    #sensor_args = { '11': Adafruit_DHT.DHT11,
-    #                '22': Adafruit_DHT.DHT22,
-    #                '2302': Adafruit_DHT.AM2302 }
-    #if len(sys.argv) == 3 and sys.argv[1] in sensor_args:
-    #    sensor = sensor_args[sys.argv[1]]
-    #    pin = sys.argv[2]
-    #else:
-    #    print('Usage: sudo ./Adafruit_DHT.py [11|22|2302] <GPIO pin number>')
-    #    print('Example: sudo ./Adafruit_DHT.py 2302 4 - Read from an AM2302 connected to GPIO pin #4')
-    #    sys.exit(1)
 
-    # We hard code the pins for our humidity controller application.
-    sensor = Adafruit_DHT.DHT11
-    pin = 4
+    sensor = htu.HTU21D()
 
     # Signal to the outside world that the program has started.
     relay_on()
@@ -98,16 +85,14 @@ def main():
             queue.put(get_rows(curs))
 
           if time.time() > last_read_time + 2:
-            # Try to grab a sensor reading.  Use the read_retry method which will retry up
-            # to 15 times to get a sensor reading (waiting 2 seconds between each retry).
-              humidity, temperature = Adafruit_DHT.read_retry(sensor, pin)
+              temperature = sensor.read_temperature()
+              humidity = sensor.read_humidity()
+              dewpoint = sensor.dewpoint(temperature, humidity)
 
-              if humidity is not None and temperature is not None and humidity < 110:
-                  print('Temp={0:0.1f}*  Humidity={1:0.1f}%'.format(temperature, humidity))
+              if humidity is not None and temperature is not None:
+                  print('Temp={0:0.1f}*  Humidity={1:0.1f}% Dewpoint={1:0.1f}*'.format(temperature, humidity, dewpoint))
                   add_data(temperature, humidity, HUMIDITY_SETPOINT, dbconn, curs)
                   last_read_time = time.time()
-              else:
-                  print('Failed to get reading. Try again!')
 
               if humidity > HUMIDITY_SETPOINT + HYSTERESIS/2:
                 relay_off()
