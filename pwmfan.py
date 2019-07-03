@@ -25,7 +25,7 @@ duty = int(sys.argv[2])
 
 while True:
   time.sleep((100 - duty) / 100.0 * period)
-  wiringpi.pwmWrite(18, 128)  # maximum RPM
+  wiringpi.pwmWrite(18, 350)  # maximum RPM
   time.sleep(duty/100.0 * period)
   wiringpi.pwmWrite(18, 0)
 
