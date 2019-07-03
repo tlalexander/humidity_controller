@@ -35,7 +35,7 @@ def launch_app(queue):
 
         data = ("[ { label: \'Temp\', data: " + str(temps) + " }," +
                 "  { label: \'Humidity\', data: " + str(humidity) + " }]")
-        options = "{ }"
+        options = ""#("{legend: { show: true, container: '#legendholder' }}")
         return render_template("main.html", data=data, options=options)
 
     @app.route("/data")

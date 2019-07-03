@@ -1,0 +1,26 @@
+Metadata-Version: 1.1
+Name: htu21d
+Version: 0.1.0
+Summary: Python 2.7 library for accessing the HTU21D-F humidity and temperature sensor on a Raspberry Pi
+Home-page: https://github.com/HoK-matic/htu21d
+Author: Holger Kupke
+Author-email: hokup@gmx.de
+License: MIT
+Description: UNKNOWN
+Platform: Linux
+Classifier: Development Status :: 4 - Beta
+Classifier: Environment :: Console
+Classifier: Environment :: Other Environment
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Education
+Classifier: Intended Audience :: Information Technology
+Classifier: Intended Audience :: Science/Research
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: POSIX :: Linux
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 2.7
+Classifier: Topic :: Education
+Classifier: Topic :: Home Automation
+Classifier: Topic :: Smart Home
+Classifier: Topic :: Scientific/Engineering
+Classifier: Topic :: System :: Hardware :: Hardware Drivers

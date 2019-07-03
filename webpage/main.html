@@ -27,8 +27,9 @@
 					var data_object = [ { label: "Temp", data: dataset[0] },
   												    { label: "Humidity", data: dataset[1] }
 														];
+					var options = {legend: { show: true, container: '#legendholder' }}
 
-					$.plot($("#placeholder"), data_object, "{}");
+					$.plot($("#placeholder"), data_object, options);
 					console.log(data_object);
 					//setTimeout(render_plot, 1000);
 					// this_plot.setData(data)
@@ -51,5 +52,6 @@
 </head>
 
 <div id="placeholder" style="width:600px;height:300px"></div>
+<div id="legendholder" style="width:100px;height:50px"></div>
 
 </html>

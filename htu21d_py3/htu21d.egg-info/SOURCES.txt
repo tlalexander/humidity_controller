@@ -1,0 +1,7 @@
+setup.py
+htu21d/__init__.py
+htu21d/htu21d.py
+htu21d.egg-info/PKG-INFO
+htu21d.egg-info/SOURCES.txt
+htu21d.egg-info/dependency_links.txt
+htu21d.egg-info/top_level.txt
